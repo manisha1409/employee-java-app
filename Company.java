@@ -9,6 +9,8 @@ class employee
             phoneno,
             empid,
             etype,
+
+
             dept;
 
     public employee(String fname,String lname,String phoneno,String empid,String etype,String dept)
@@ -36,12 +38,17 @@ public class Company
 {    //static HashSet<employee> set=new HashSet<employee>();
     static TreeMap<Integer,List<employee>> manager= new TreeMap<Integer,List<employee>>();
     static TreeMap<String,List<Integer>> eManList=new TreeMap<String,List<Integer>>();
- static  List<employee> m1=new ArrayList<employee>();
-    static  List<employee> m2=new ArrayList<employee>();
-    static  List<employee> m3=new ArrayList<employee>();
+ static  List<employee> m1=new ArrayList<employee>();    //list of employee working under manager 1
+    static  List<employee> m2=new ArrayList<employee>();   //list of employee working under manager 2
+    static  List<employee> m3=new ArrayList<employee>();    // //list of employee working under manager 3
    //To enter details of employee
    static class typeException extends Exception
    {
+       public typeException(String s)
+       {
+           // Call constructor of parent Exception
+           super(s);
+       }
 
    }
     public static void enter()
@@ -62,22 +69,26 @@ public class Company
              String e1 = sc.nextLine();
             try {
                 if (!(e1.equals("fresher") || e1.equals("experienced") || e1.equals("senior")))
-                    throw new typeException();
+                    throw new typeException("wrong choice");
                 else
                     etype=e1;
             } catch (typeException t) {
-                System.out.println("wrong type.default(fresher) selected");
+                System.out.println(t.getMessage());
+                System.out.println("default(fresher) selected");
+
             }
         String dept="A";
             System.out.println("enter employee department:A, B or C");
         String d=sc.nextLine();
         try {
             if (!(d.equals("A") || d.equals("B") || d.equals("C")))
-                throw new typeException();
+                throw new typeException("wrong choice");
             else
                 dept=d;
         } catch (typeException t) {
+            System.out.println(t.getMessage());
             System.out.println("wrong type.default(A) selected");
+
         }
         employee e=new employee(fname,lname,phoneno,empid,etype,dept);
         int opt=1;
@@ -199,21 +210,21 @@ public class Company
     {
         System.out.println("enter empid of employee for updation and corresponding manager id;");
         Scanner sc=new Scanner(System.in);
-        final String id1=sc.nextLine();
+        final String ID_1=sc.nextLine();
         int id=sc.nextInt();
         if(id==1)
         {
-            m1.removeIf((employee f)->{return f.empid.equals(id1);});
+            m1.removeIf((employee f)->{return f.empid.equals(ID_1);});
             manager.put(1,m1);
         }
         if(id==2)
         {
-            m2.removeIf((employee f)->{return f.empid.equals(id1);});
+            m2.removeIf((employee f)->{return f.empid.equals(ID_1);});
             manager.put(2,m2);
         }
         if(id==3)
         {
-            m3.removeIf((employee f)->{return f.empid.equals(id1);});
+            m3.removeIf((employee f)->{return f.empid.equals(ID_1);});
             manager.put(3,m3);
         }
         System.out.println("update the details of employee");
@@ -225,7 +236,7 @@ public class Company
                 eManList.entrySet();
         Iterator<Map.Entry<String, List<Integer>>> iterator =
                 em.iterator();
-
+ //eManList is a map which stores the id of all managers associated with a particular employee.
         while (iterator.hasNext()) {
 
             Map.Entry<String, List<Integer>> entry = iterator.next();
@@ -274,7 +285,9 @@ public class Company
                 System.out.println("Wrong input format");
                 break;
             }
+
         }
+
 
 
 
