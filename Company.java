@@ -2,37 +2,7 @@ package myproject;
 
 import java.util.*;
 
-class employee
-{
-    String fname,
-            lname,
-            phoneno,
-            empid,
-            etype,
 
-
-            dept;
-
-    public employee(String fname,String lname,String phoneno,String empid,String etype,String dept)
-    {
-        this.fname=fname;
-        this.lname=lname;
-        this.phoneno=phoneno;
-        this.empid=empid;
-        this.etype=etype;
-        this.dept=dept;
-    }
-
-    public void getName()
-    {
-        System.out.println(this.fname+" " +this.lname);
-    }
-
-    public void getType()
-    {
-        System.out.println(this.etype);
-    }
-}
 
 public class Company
 {    //static HashSet<employee> set=new HashSet<employee>();
@@ -41,216 +11,20 @@ public class Company
  static  List<employee> m1=new ArrayList<employee>();    //list of employee working under manager 1
     static  List<employee> m2=new ArrayList<employee>();   //list of employee working under manager 2
     static  List<employee> m3=new ArrayList<employee>();    // //list of employee working under manager 3
-   //To enter details of employee
-   static class typeException extends Exception
-   {
-       public typeException(String s)
-       {
-           // Call constructor of parent Exception
-           super(s);
-       }
-
-   }
-    public static void enter()
-    {
-        System.out.println("enter details");
-        Scanner sc=new Scanner(System.in);
-        System.out.println("enter first name");
-        String fname=sc.nextLine();
-        System.out.println("enter last name ");
-        String lname=sc.nextLine();
-        System.out.println("enter phone no.");
-        String phoneno=sc.nextLine();
-        System.out.println("enter emplyee id");
-        String empid=sc.nextLine();
-        String etype="fresher";
-            System.out.println("enter employee type:fresher,experienced or senior");
-
-             String e1 = sc.nextLine();
-            try {
-                if (!(e1.equals("fresher") || e1.equals("experienced") || e1.equals("senior")))
-                    throw new typeException("wrong choice");
-                else
-                    etype=e1;
-            } catch (typeException t) {
-                System.out.println(t.getMessage());
-                System.out.println("default(fresher) selected");
-
-            }
-        String dept="A";
-            System.out.println("enter employee department:A, B or C");
-        String d=sc.nextLine();
-        try {
-            if (!(d.equals("A") || d.equals("B") || d.equals("C")))
-                throw new typeException("wrong choice");
-            else
-                dept=d;
-        } catch (typeException t) {
-            System.out.println(t.getMessage());
-            System.out.println("wrong type.default(A) selected");
-
-        }
-        employee e=new employee(fname,lname,phoneno,empid,etype,dept);
-        int opt=1;
-        List<Integer> mlist= new ArrayList<Integer>();
-        while(opt!=2) {
-            System.out.println("1.enter manager info?\n2.exit");
-            opt = sc.nextInt();
-            if (opt == 1)
-            {
-                System.out.println("enter manger id");
-                Integer id = sc.nextInt();
-                if (id == 1) {
-                    m1.add(e);
-                    manager.put(id, m1);
-                } else if (id == 2) {
-                    m2.add(e);
-                    manager.put(id, m2);
-                } else {
-                    m3.add(e);
-                    manager.put(id, m3);
-                }
-                mlist.add(id);
-                eManList.put(empid,mlist);
-            }
-        }
-        System.out.println("object created!");
-        System.out.println("name of employee:  ");
-        e.getName();
-        System.out.println("employee type");
-                e.getType();
-
-        //set.add(e);
-    }
 
 
 
-    //to show details of all employee
-    public static void show()
-    {
-        Set<Map.Entry<Integer, List<employee>>> em =
-                manager.entrySet();
-        Iterator<Map.Entry<Integer, List<employee>>> iterator =
-                em.iterator();
-
-        while(iterator.hasNext()) {
-
-            Map.Entry<Integer, List<employee>> entry = iterator.next();
-
-            System.out.println("\nManager id: "
-                    + entry.getKey()
-                    + "\nList of Employee and their details under manager "
-                    + entry.getKey() + ":");
-
-            try
-            {
-                for (employee e : entry.getValue())
-                {
-                    System.out.println("\t\t\t\t\t\t\t" + e.fname + " " + e.lname + " " + e.phoneno + " " + e.empid + " " + e.etype + " " + e.dept);
-                }
-            }
-             catch(NullPointerException e)
-            {
-                System.out.print("No employee under manager "+ entry.getKey());
-            }
-        }
-        //System.out.println(manager);
-    }
-
-    //to delete record of a particular employee
-    public static void delete()
-    {
-        System.out.println("enter manager id for deletion;");
-        Scanner sc=new Scanner(System.in);
-        final int id=sc.nextInt();
-        System.out.println(id);
-        manager.put(id,null);
-
-        show();
-    }
 
 
-    // to delete a manager and reassign the associated employees to a new manager
-    public static void updateManager()
-    {
-        System.out.println("enter a manager id for deletion and a manager id to reassign associated employees to a new manager;");
-        Scanner sc = new Scanner(System.in);
-        int id = sc.nextInt();
-        int newid = sc.nextInt();
-        manager.put(id, null);
-        if (id == 1 && newid == 2) {
-            m2.addAll(m1);
-            m1.clear();
-        }
-        if (id == 1 && newid == 3) {
-            m3.addAll(m1);
-            m1.clear();
-        }
-        if (id == 2 && newid == 1) {
-            m1.addAll(m2);
-            m2.clear();
-        }
-        if (id == 2 && newid == 3) {
-            m3.addAll(m2);
-            m2.clear();
-        }
-        if (id == 3 && newid == 2) {
-            m2.addAll(m3);
-            m3.clear();
-        }
-        if (id == 3 && newid == 1) {
-            m1.addAll(m3);
-            m3.clear();
-        }
-    }
 
 
-    //to update record of a particular employee
-    public static void updateEmp()
-    {
-        System.out.println("enter empid of employee for updation and corresponding manager id;");
-        Scanner sc=new Scanner(System.in);
-        final String ID_1=sc.nextLine();
-        int id=sc.nextInt();
-        if(id==1)
-        {
-            m1.removeIf((employee f)->{return f.empid.equals(ID_1);});
-            manager.put(1,m1);
-        }
-        if(id==2)
-        {
-            m2.removeIf((employee f)->{return f.empid.equals(ID_1);});
-            manager.put(2,m2);
-        }
-        if(id==3)
-        {
-            m3.removeIf((employee f)->{return f.empid.equals(ID_1);});
-            manager.put(3,m3);
-        }
-        System.out.println("update the details of employee");
-        enter();
-    }
-    public static void emandetails()
-    {
-        Set<Map.Entry<String, List<Integer>>> em =
-                eManList.entrySet();
-        Iterator<Map.Entry<String, List<Integer>>> iterator =
-                em.iterator();
- //eManList is a map which stores the id of all managers associated with a particular employee.
-        while (iterator.hasNext()) {
-
-            Map.Entry<String, List<Integer>> entry = iterator.next();
-
-            System.out.println("\nEmployee id: "
-                    + entry.getKey()
-                    + "\nList of managerid for  employee id "
-                    + entry.getKey() + ":");
-            for (Integer e : entry.getValue())
-                System.out.println(e);
 
 
-        }
-    }
+
+
+
+
+
 
     public static void main(String[] args)
     {
@@ -274,12 +48,12 @@ public class Company
             //option = sc.nextInt();
             try {
                 option = sc.nextInt();
-                if (option == 1) enter();
-                else if (option == 2) show();
-                else if (option == 3) delete();
-                else if (option == 4) updateManager();
-                else if (option == 5) updateEmp();
-                else if(option==6) emandetails();
+                if (option == 1) create.enter();
+                else if (option == 2) display.show();
+                else if (option == 3) remove.delete();
+                else if (option == 4) updateManager.updateManager();
+                else if (option == 5) updateEmp.updateEmp();
+                else if(option==6) emandetails.emandetails();
 
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input format");
